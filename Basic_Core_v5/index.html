@@ -24,7 +24,7 @@
     <p>Result: {{ counter }}</p>
     <input type="text" v-bind:value="name" v-on:input="setName" v-on:keyup.enter="confirmedInput">
     <button v-on:click="resetInput">Reset Input</button>
-    <p>Your name: {{ confirmedName }}</p>
+    <p>Your name: {{ fullname }}</p>
     <form v-on:submit.prevent="submitForm">
         <input type="text">
         <button>Sign up</button>

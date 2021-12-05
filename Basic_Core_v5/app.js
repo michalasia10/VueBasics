@@ -3,8 +3,13 @@ const app = Vue.createApp({
         return {
             counter: 0,
             name: '',
-            confirmedName : '',
+            confirmedName: '',
         };
+    },
+    computed :{
+       fullname(){
+           return (this.name === '') ? this.name : this.name + ' ' + 'Lasia'
+       }
     },
     methods: {
         add(num) {
@@ -16,13 +21,13 @@ const app = Vue.createApp({
         setName(event) {
             this.name = event.target.value
         },
-        submitForm(){
+        submitForm() {
             alert('submited')
         },
-        confirmedInput(){
+        confirmedInput() {
             this.confirmedName = this.name
         },
-        resetInput(){
+        resetInput() {
             this.name = ''
         }
     }
