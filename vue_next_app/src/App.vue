@@ -1,35 +1,33 @@
 <template>
     <div>
         <the-header></the-header>
-        <badge-list></badge-list>
-        <user-info
-                :full-name="activeUser.name"
-                :info-text="activeUser.description"
-                :role="activeUser.role"
-        ></user-info>
-        <course-goals>
-            <template #default="slotProps">
-                <h2>{{slotProps.item}}</h2>
-            </template>
-        </course-goals>
+        <button @click="setSelectedCompontent('active-goals')">Active Goals</button>
+        <button @click="setSelectedCompontent('manage-goals')">Manage Goals</button>
+<!--        <active-goals v-if="selectedCompontent === 'active-goals'"/>-->
+<!--        <manage-goals v-if="selectedCompontent === 'manage-goals'"/>-->
+        <component :is="selectedCompontent"></component>
     </div>
 </template>
 
 <script>
     import TheHeader from './components/TheHeader.vue'
-    import UserInfo from "./components/UserInfo";
-    import BadgeList from "./components/BadgeList"
-    import CourseGoals from "./components/CourseGoals";
-
+    // import UserInfo from "./components/UserInfo";
+    // import BadgeList from "./components/BadgeList"
+    // import CourseGoals from "./components/CourseGoals";
+    import ManageGoals from "./components/ManageGoals";
+    import ActiveGoals from "./components/ActiveGoals";
     export default {
         components: {
             TheHeader,
-            UserInfo,
-            BadgeList,
-            CourseGoals
+            // UserInfo,
+            // BadgeList,
+            // CourseGoals
+            ActiveGoals,
+            ManageGoals
         },
         data() {
             return {
+                selectedCompontent : 'active-goals',
                 activeUser: {
                     name: 'Maximilian Schwarzmüller',
                     description: 'Site owner and admin',
@@ -37,6 +35,11 @@
                 },
             };
         },
+        methods:{
+            setSelectedCompontent(cmp){
+                this.selectedCompontent = cmp
+            }
+        }
     };
 </script>
 
