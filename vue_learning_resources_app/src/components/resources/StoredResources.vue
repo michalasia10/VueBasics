@@ -15,7 +15,7 @@
     export default {
         name: "StoredResources",
         components : {ResourcesItem},
-        props : ['resources']
+        inject : ['resources']
     }
 </script>
 
