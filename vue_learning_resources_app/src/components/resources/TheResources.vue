@@ -11,58 +11,64 @@
 <script>
 import StoredResources from './StoredResources.vue';
 import AddResource from './AddResource.vue';
+
 export default {
   name: "TheResources",
-  components:{
+  components: {
     StoredResources,
     AddResource
   },
-  data(){
+  data() {
     return {
       selectedTab: 'stored-resources',
       storedResrources: [
-                    {
-                        id: 'official-guide',
-                        title: 'Official Guide',
-                        description: 'The official vue docs',
-                        link: 'https://vuejs.org'
-                    },
-                    {
-                        id: 'google',
-                        title: 'Official Google',
-                        description: 'The official google ',
-                        link: 'https://google.com'
-                    }
-                ]
+        {
+          id: 'official-guide',
+          title: 'Official Guide',
+          description: 'The official vue docs',
+          link: 'https://vuejs.org'
+        },
+        {
+          id: 'google',
+          title: 'Official Google',
+          description: 'The official google ',
+          link: 'https://google.com'
+        }
+      ]
     }
   },
-  provide(){
+  provide() {
     return {
       resources: this.storedResrources,
-      addResource: this.addResource
-      }
-    },
-  computed:{
-    storedResButtonMode(){
-      return this.selectedTab ==='stored-resources' ? null : 'flat'
-    },
-    addResButtonMode(){
-      return this.selectedTab ==='add-resource' ? null : 'flat'
+      addResource: this.addResource,
+      deleteResources: this.removeResource,
     }
   },
-  methods:{
-    setSelectedTab(tab){
+  computed: {
+    storedResButtonMode() {
+      return this.selectedTab === 'stored-resources' ? null : 'flat'
+    },
+    addResButtonMode() {
+      return this.selectedTab === 'add-resource' ? null : 'flat'
+    }
+  },
+  methods: {
+    setSelectedTab(tab) {
       this.selectedTab = tab
     },
-    addResource(title,description,url){
+    addResource(title, description, url) {
       const newResource = {
         id: new Date().toISOString(),
         title: title,
-        description : description,
-        link : url
+        description: description,
+        link: url
       };
       this.storedResrources.unshift(newResource);
       this.selectedTab = 'stored-resources'
+    },
+    removeResource(resId) {
+      const resIndex = this.storedResrources.findIndex(res => res.id === resId);
+      this.storedResrources.splice(resIndex, 1)
     }
   }
 }
