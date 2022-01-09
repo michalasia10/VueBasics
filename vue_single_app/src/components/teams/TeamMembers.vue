@@ -3,12 +3,14 @@
     <h2>{{ teamName }}</h2>
     <ul>
       <user-item
-        v-for="member in members"
-        :key="member.id"
-        :name="member.fullName"
-        :role="member.role"
+          v-for="member in members"
+          :key="member.id"
+          :name="member.fullName"
+          :role="member.role"
       ></user-item>
     </ul>
+    <router-link v-if="lastTeam === true" :to="nextTeam">Go to Next Team</router-link>
+    <router-link v-else to="/teams">Check all teams</router-link>
   </section>
 </template>
 
@@ -16,18 +18,53 @@
 import UserItem from '../users/UserItem.vue';
 
 export default {
+  inject: ['users', 'teams'],
+  props:['teamId'],
   components: {
     UserItem
   },
   data() {
     return {
-      teamName: 'Test',
-      members: [
-        { id: 'u1', fullName: 'Max Schwarz', role: 'Engineer' },
-        { id: 'u2', fullName: 'Max Schwarz', role: 'Engineer' },
-      ],
-    };
+      teamName: '',
+      members: [],
+      routeId : null,
+    }
   },
+  methods: {
+    loadTeamMembers(teamId) {
+      const selectedTeam = this.teams.find(team => team.id === teamId);
+      const members = selectedTeam.members;
+      const selectedMembers = [];
+      for (const member of members) {
+        const selectedUser = this.users.find(user => user.id === member);
+        selectedMembers.push(selectedUser)
+      }
+      this.members = selectedMembers;
+      this.teamName = selectedTeam.name
+    }
+  },
+  created() {
+    this.routeId = parseInt(this.teamId.split('t')[1])
+    this.loadTeamMembers(this.teamId);
+  },
+  watch: {
+    teamId(newId) {
+      this.routeId = parseInt(this.teamId.split('t')[1])
+      this.loadTeamMembers(newId);
+    }
+
+  },
+  computed: {
+    nextTeam() {
+      const nextId = this.routeId + 1
+      console.log(nextId)
+      return '/teams/t' + nextId.toString()
+    },
+    lastTeam() {
+      console.log(this.routeId < this.teams.length)
+      return this.routeId < this.teams.length;
+    }
+  }
 };
 </script>
 
